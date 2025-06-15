@@ -59,7 +59,7 @@ async function run() {
           application.company_logo = job.company_logo;
           application.location = job.location;
           application.jobType = job.jobType;
-          application.jobType = job.applicationDeadline;
+          application.applicationDeadline = job.applicationDeadline;
         }
       }
 
@@ -69,6 +69,13 @@ async function run() {
     app.post("/job-applications", async (req, res) => {
       const application = req.body;
       const result = await jobApplicationCollection.insertOne(application);
+      res.send(result);
+    });
+
+    app.delete("/job-application/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await jobApplicationCollection.deleteOne(query);
       res.send(result);
     });
   } finally {
